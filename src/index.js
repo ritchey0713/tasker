@@ -15,7 +15,7 @@ app.post('/contractors', (req, res) => {
       res.send(contractor)
     })
     .catch((error) => {
-      res.send(error)
+      res.status(400).send(error)
     })
 })
 
