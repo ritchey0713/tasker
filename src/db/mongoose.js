@@ -1,8 +1,12 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
 
-mongoose.connect('mongodb://127.0.0.1:27017/task-lister', {
-  useNewUrlParser: true,
-  useCreateIndex: true
+const connectionURL = 'mongodb://127.0.0.1:27017/task-lister'
+
+mongoose.connect(connectionURL, {
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useNewUrlParser: true
 })
 
 const User = mongoose.model("User", {
@@ -17,7 +21,16 @@ const User = mongoose.model("User", {
         throw new Error("age must be a positive number")
       }
     }
-  } 
+  },
+  email: {
+    type: String,
+    required: true,
+    validate(value) {
+      if(!validator.isEmail(value)) {
+        throw new Error("Invalid Email")
+      }
+    }
+  }
 })
 
 const Task= mongoose.model("Task", {
@@ -31,7 +44,7 @@ const Task= mongoose.model("Task", {
 
 const me = new User({
   name: "Dave",
-  age: -1
+  email: "mike@mike.com"
 })
 
 me.save()
