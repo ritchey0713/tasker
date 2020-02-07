@@ -1,8 +1,13 @@
-const mongoDb = require('mongodb')
-const MongoClient = mongoDb.MongoClient
+// const mongoDb = require('mongodb')
+// const MongoClient = mongoDb.MongoClient
+// const ObjectID = mongodb.ObjectID
+
+const { MongoClient, ObjectID } = require("mongo")
 
 const connectionURL = "mongodb://127.0.0.1:27017"
 const databaseName = 'tasker-dev'
+
+const id = new ObjectID()
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
   if(error) {
