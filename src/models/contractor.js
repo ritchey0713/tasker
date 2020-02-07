@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 
-const User = mongoose.model("User", {
+const Contractor = mongoose.model("User", {
   name: {
     type: String,
     required: true,
@@ -33,10 +33,12 @@ const User = mongoose.model("User", {
     trim: true,
     validate(value) {
       if(value.length < 6 ) {
-        throw new Error("password not not enough!")
+        throw new Error("password long not enough!")
       } else if(value.includes("password")) {
         throw new Error("Don't include 'password' in your password!")
       }
     }
   }
 })
+
+module.exports = Contractor
