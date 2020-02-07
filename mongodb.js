@@ -18,13 +18,15 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 //create db
   const db = client.db(databaseName)  
 
-  db.collection("users").updateOne({
-    _id: new ObjectID("5e3c681d1e3f721ae20100c2")
-  }, {
-    $set: {
-      name: "John"
-    }
-  }).then((res) => {
+  // db.collection('users').deleteMany({ 
+  //   age: 13
+  //  }).then((res) => {
+  //     console.log(res)
+  //  }).catch((err) => {
+  //     console.log(err)
+  //  })
+
+  db.collection("tasks").deleteOne({ description: "laundry"}).then((res) => {
     console.log(res)
   }).catch((err) => {
     console.log(err)
