@@ -7,10 +7,16 @@ mongoose.connect('mongodb://127.0.0.1:27017/task-lister', {
 
 const User = mongoose.model("User", {
   name: {
-    type: String
+    type: String,
+    required: true
   },
   age: {
-    type: Number
+    type: Number,
+    validate(value) {
+      if(value < 0) {
+        throw new Error("age must be a positive number")
+      }
+    }
   } 
 })
 
@@ -24,27 +30,27 @@ const Task= mongoose.model("Task", {
 })
 
 const me = new User({
-  name: "me",
-  age: "true"
+  name: "Dave",
+  age: -1
 })
 
-// me.save()
-//   .then((res) => {
-//     console.log("SAVED", res)
-//   })
-//   .catch((err) => {
-//     console.log("SAVE ERROR", err)
-//   })
-
-  const task = new Task({
-    description: "Test task",
-    completed: false
+me.save()
+  .then((res) => {
+    console.log("SAVED", res)
+  })
+  .catch((err) => {
+    console.log("SAVE ERROR", err)
   })
 
-  task.save()
-    .then(() => {
-      console.log("SAVED", task)
-    })
-    .catch((error) => {
-      console.log('TASK NOT SAVED', error)
-    })
+  // const task = new Task({
+  //   description: "Test task",
+  //   completed: false
+  // })
+
+  // task.save()
+  //   .then(() => {
+  //     console.log("SAVED", task)
+  //   })
+  //   .catch((error) => {
+  //     console.log('TASK NOT SAVED', error)
+  //   })
