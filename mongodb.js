@@ -2,12 +2,14 @@
 // const MongoClient = mongoDb.MongoClient
 // const ObjectID = mongodb.ObjectID
 
-const { MongoClient, ObjectID } = require("mongo")
+const { MongoClient, ObjectID } = require("mongodb")
 
 const connectionURL = "mongodb://127.0.0.1:27017"
 const databaseName = 'tasker-dev'
 
-const id = new ObjectID()
+// const id = new ObjectID()
+// console.log(id)
+// console.log(id.getTimestamp())
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
   if(error) {
@@ -17,8 +19,9 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
   const db = client.db(databaseName)  
 
   // db.collection('users').insertOne({
-  //   name: "Bob",
-  //   age: 29
+  //   _id: id,
+  //   name: "Dan",
+  //   age: 55
   // }, (error, result) => {
   //   if(error) {
   //     return console.log('error inserting user', error)
@@ -52,4 +55,30 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
   // ], (error, result) => {
   //     console.log(result.ops)
   // })
-})
+
+  // db.collection('users').findOne({ _id: new ObjectID("5e3cd620e63eec3405b30868") }, (error, user) => {
+  //   if(error){
+  //     return console.log("user not found")
+  //   }
+  //   console.log("user:", user)
+  // })
+
+  // db.collection('users').find({ age: 13 }).toArray((error, users) => {
+  //   console.log(users)
+  // })
+
+  // db.collection('users').find({ age: 13 }).count((error, count) => {
+  //   console.log(count)
+  // })
+
+  db.collection("tasks").findOne({ _id: new ObjectID("5e3c8e7f20bde822dfb60d76") }, (error, task) => {
+    console.log(task)
+  })
+
+  db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+    console.log(tasks)
+  })
+  
+
+}) // END-mongodb
+
