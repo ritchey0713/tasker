@@ -18,7 +18,6 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 //create db
   const db = client.db(databaseName)  
 
-
-
+ 
 }) // END-mongodb
 
