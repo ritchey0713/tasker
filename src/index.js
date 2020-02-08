@@ -21,13 +21,13 @@ app.post('/contractors', (req, res) => {
 })
 
 app.post('/tasks', (req, res) => {
-  const task = new task(req.body)
+  const task = new Task(req.body)
   task.save()
     .then(() => {
       res.send(task)
     })
     .catch((error) => {
-      console.log(error)
+      res.status(400).send(error)
     })
   
 })
