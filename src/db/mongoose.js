@@ -9,16 +9,5 @@ mongoose.connect(connectionURL, {
 })
 
 
-const Task= mongoose.model("Task", {
-  description: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  completed: {
-    type: Boolean,
-    default: false,
 
-  }
-})
 
