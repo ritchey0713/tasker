@@ -43,6 +43,20 @@ app.get("/contractors", (req, res) => {
     })
 })
 
+app.get("/contractors/:id", (req, res) => {
+  const _id = req.params.id
+  Contractor.findById(_id)
+    .then((contractor) => {
+      if(!contractor){
+        return res.send(404).send()
+      }
+      res.send(contractor)
+    })
+    .catch((error) => {
+      res.status(500).send()
+    })
+})
+
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
