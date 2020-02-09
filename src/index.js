@@ -20,19 +20,6 @@ app.post('/contractors', (req, res) => {
     })
 })
 
-app.post('/tasks', (req, res) => {
-  const task = new Task(req.body)
-  
-  task.save()
-    .then(() => {
-      res.send(task)
-    })
-    .catch((error) => {
-      res.status(500).send()
-    })
-  
-})
-
 app.get("/contractors", (req, res) => {
   Contractor.find({  })
     .then((contractors) => {
@@ -55,6 +42,30 @@ app.get("/contractors/:id", (req, res) => {
     .catch((error) => {
       res.status(500).send()
     })
+})
+
+
+app.post('/tasks', (req, res) => {
+  const task = new Task(req.body)
+  
+  task.save()
+    .then(() => {
+      res.send(task)
+    })
+    .catch((error) => {
+      res.status(500).send()
+    })
+  
+})
+
+app.get("/tasks", (req, res) => {
+  Contractor.find({  })
+  .then((tasks) => {
+    res.send(tasks)
+  })
+  .catch((error) => {
+    res.status(500).send()
+  })
 })
 
 app.listen(port, () => {
