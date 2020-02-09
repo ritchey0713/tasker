@@ -35,7 +35,7 @@ const Contractor = mongoose.model("User", {
     validate(value) {
       if(value.length < 6 ) {
         throw new Error("password long not enough!")
-      } else if(value.tolowerCase().includes("password")) {
+      } else if(value.toLowerCase().includes("password")) {
         throw new Error("Don't include 'password' in your password!")
       }
     }
