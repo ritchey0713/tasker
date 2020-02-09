@@ -22,6 +22,7 @@ app.post('/contractors', (req, res) => {
 
 app.post('/tasks', (req, res) => {
   const task = new Task(req.body)
+  
   task.save()
     .then(() => {
       res.send(task)
@@ -35,3 +36,4 @@ app.post('/tasks', (req, res) => {
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
+
