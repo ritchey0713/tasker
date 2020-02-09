@@ -59,7 +59,7 @@ app.post('/tasks', (req, res) => {
 })
 
 app.get("/tasks", (req, res) => {
-  Contractor.find({  })
+  Task.find({  })
   .then((tasks) => {
     res.send(tasks)
   })
