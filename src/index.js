@@ -33,6 +33,16 @@ app.post('/tasks', (req, res) => {
   
 })
 
+app.get("/contractors", (req, res) => {
+  Contractor.find({  })
+    .then((contractors) => {
+      res.send(contractors)
+    })
+    .catch((error) => {
+      res.status(400).send(error)
+    })
+})
+
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
