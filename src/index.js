@@ -42,17 +42,6 @@ app.get("/contractors/:id", async(req, res) => {
     res.status(500).send()
   }
 
-
-  Contractor.findById(_id)
-    .then((contractor) => {
-      if(!contractor){
-        return res.send(404).send()
-      }
-      res.send(contractor)
-    })
-    .catch((error) => {
-      res.status(500).send()
-    })
 })
 
 app.post('/tasks', (req, res) => {
