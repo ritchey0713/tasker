@@ -45,7 +45,26 @@ app.get("/contractors/:id", async(req, res) => {
 })
 
 app.patch("/contractors/:id", async(req, res) => {
-  
+  const updates = Object.keys(req.body)
+  const allowedUpdate = ["name", "age", "email", "password"]
+  const isValidUpdates = updates.every((update) => {
+    return allowedUpdate.includes(update)
+  })
+
+  if(!isValidUpdates) {
+    return res.status(400).send({ error: "Invalid updates"})
+  }
+
+  try{
+    const contractor = await Contractor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+    if(!contractor) {
+      return res.status(404).send()
+    }
+    res.status(200).send(contractor)
+  } catch(err){
+    res.status(400).send(err)
+  }
 })
 
 app.post('/tasks', async(req, res) => {
