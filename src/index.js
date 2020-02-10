@@ -44,6 +44,10 @@ app.get("/contractors/:id", async(req, res) => {
 
 })
 
+app.patch("/contractors/:id", async(req, res) => {
+  
+})
+
 app.post('/tasks', async(req, res) => {
 
   try {
