@@ -108,7 +108,20 @@ app.patch("/tasks/:id", async(req, res) => {
   const isValidUpdates = updates.every((update) => {
     return allowedUpdates.includes(update)
   })
-   
+  if(!isValidUpdates){
+    res.status(400).send({ error: "invalid update" })
+  }
+
+  try{
+    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    if(!task) {
+      return res.status(400).send()
+    }
+    res.status(200).send(task)
+  } catch(err) {
+    res.status(400).send()
+  }
+
 })
 
 
