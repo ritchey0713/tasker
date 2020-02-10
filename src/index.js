@@ -14,3 +14,14 @@ app.use(contractorRouter, taskRouter)
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
+
+const bcrpyt = require("bcryptjs")
+
+const myFunction = async() => {
+  const password = "red12345!"
+  const hashed = await bcrpyt.hash(password, 8)
+  console.log(password)
+  console.log(hashed)
+}
+
+myFunction()
