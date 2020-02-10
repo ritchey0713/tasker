@@ -55,14 +55,14 @@ app.post('/tasks', async(req, res) => {
   
 })
 
-app.get("/tasks", (req, res) => {
-  Task.find({  })
-  .then((tasks) => {
+app.get("/tasks", async(req, res) => {
+  try {
+    const tasks = await Task.find({ })
     res.send(tasks)
-  })
-  .catch((error) => {
+  }catch(err) {
     res.status(500).send()
-  })
+  }
+
 })
 
 app.get("/tasks/:id", async(req, res) => {
