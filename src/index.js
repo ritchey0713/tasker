@@ -29,8 +29,20 @@ app.get("/contractors", async(req, res) => {
   }
 })
 
-app.get("/contractors/:id", (req, res) => {
+app.get("/contractors/:id", async(req, res) => {
   const _id = req.params.id
+
+  try {
+    const contractor = await Contractor.findById(_id)
+    if(!contractor){
+      return res.status(404).send()
+    }
+    res.send(contractor)
+  }catch(err) {
+    res.status(500).send()
+  }
+
+
   Contractor.findById(_id)
     .then((contractor) => {
       if(!contractor){
