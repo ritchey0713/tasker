@@ -11,9 +11,6 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 app.use(contractorRouter, taskRouter)
 
-
-
-
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
