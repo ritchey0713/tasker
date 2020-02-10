@@ -20,14 +20,13 @@ app.post('/contractors', async(req, res) => {
 
 })
 
-app.get("/contractors", (req, res) => {
-  Contractor.find({  })
-    .then((contractors) => {
-      res.send(contractors)
-    })
-    .catch((error) => {
-      res.status(400).send(error)
-    })
+app.get("/contractors", async(req, res) => {
+  try {
+    const contractors = await Contractor.find({  })
+    res.status(200).send(contractors)
+  }catch(err) {
+    res.status(400).send(err)
+  }
 })
 
 app.get("/contractors/:id", (req, res) => {
