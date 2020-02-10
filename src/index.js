@@ -8,16 +8,16 @@ const port = process.env.PORT || 3000
 
 app.use(express.json())
 
-app.post('/contractors', (req, res) => {
+app.post('/contractors', async(req, res) => {
   const contractor = new Contractor(req.body)
 
-  contractor.save()
-    .then((result) => {
-      res.send(contractor)
-    })
-    .catch((error) => {
-      res.status(400).send(error)
-    })
+  try {
+    await contractor.save()
+    res.status(201).send(contractor)
+  } catch(err) {
+    res.status(400).send(err)
+  }
+
 })
 
 app.get("/contractors", (req, res) => {
