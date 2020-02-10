@@ -102,6 +102,17 @@ app.get("/tasks/:id", async(req, res) => {
   }
 })
 
+app.patch("/tasks/:id", async(req, res) => {
+  const updates = Object.keys(req.body)
+  const allowedUpdates = ["description", "completed"]
+  const isValidUpdates = updates.every((update) => {
+    return allowedUpdates.includes(update)
+  })
+   
+})
+
+
+
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
