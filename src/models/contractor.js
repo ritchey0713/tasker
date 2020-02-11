@@ -45,6 +45,7 @@ const contractorSchema = new mongoose.Schema({
 })
 
 // validate email/password
+
 contractorSchema.statics.findByCredentials = async(email, password) => {
   const contractor = await Contractor.findOne({ email })
 
@@ -54,7 +55,7 @@ contractorSchema.statics.findByCredentials = async(email, password) => {
   }
 
   const isMatch = await bcrypt.compare(password, contractor.password)
-  if(!notMatch) {
+  if(!isMatch) {
     throw new Error("Unable to log in!")
   }
   return contractor
