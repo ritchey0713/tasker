@@ -3,9 +3,9 @@ const Task = require("../models/task.js")
 const router = express.Router()
 
 router.post('/tasks', async(req, res) => {
-
+  const task = new Task(req.body)
   try {
-    const task = await new Task(req.body)
+    await task.save()
     res.send(task)
   } catch(err) {
     res.status(500).send()
