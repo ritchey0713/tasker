@@ -18,8 +18,8 @@ router.post("/contractors/login", async (req, res) => {
   try {
     const contractor = await Contractor.findByCredentials(req.body.email, req.body.password)
     res.send(contractor)
-  }catch(e) {
-    res.send(400).send()
+  }catch(err) {
+    res.status(400).send()
   }
 })
 
