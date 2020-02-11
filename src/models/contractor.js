@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
+const bcrypt = require('bcryptjs')
 
 const contractorSchema = new mongoose.Schema({
   name: {
@@ -40,6 +41,16 @@ const contractorSchema = new mongoose.Schema({
       }
     }
   }
+})
+
+// normal func have to bind this
+contractorSchema.pre("save", async function(next) {
+  const contractor = this
+
+  if(contractor.isModified('password')) {
+    contractor.password = await bcrypt.hash(contractor.password, 8)
+  }
+  next()
 })
 
 const Contractor = mongoose.model("User", contractorSchema)
