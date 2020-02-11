@@ -43,7 +43,13 @@ const contractorSchema = new mongoose.Schema({
   }
 })
 
-// normal func have to bind this
+// validate email/password
+contractorSchema.statics.findByCredentials = async(email, password) => {
+  const contractor = await Contractor.findOne({ email })
+  
+}
+
+// hash password normal func have to bind this
 contractorSchema.pre("save", async function(next) {
   const contractor = this
 
