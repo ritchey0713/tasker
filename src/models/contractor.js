@@ -22,6 +22,7 @@ const contractorSchema = new mongoose.Schema({
     required: true,
     trim: true,
     lowercase: true,
+    unique: true,
     validate(value) {
       if(!validator.isEmail(value)) {
         throw new Error("Invalid Email")
@@ -46,7 +47,17 @@ const contractorSchema = new mongoose.Schema({
 // validate email/password
 contractorSchema.statics.findByCredentials = async(email, password) => {
   const contractor = await Contractor.findOne({ email })
-  
+
+
+  if(!contractor) {
+    throw new Error("Unable to log in!")
+  }
+
+  const isMatch = await bcrypt.compare(password, contractor.password)
+  if(!notMatch) {
+    throw new Error("Unable to log in!")
+  }
+  return contractor
 }
 
 // hash password normal func have to bind this
