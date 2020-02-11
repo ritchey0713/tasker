@@ -42,13 +42,22 @@ const contractorSchema = new mongoose.Schema({
         throw new Error("Don't include 'password' in your password!")
       }
     }
-  }
+  },
+  tokens: [{
+    token: {
+      type: String,
+      required: true,
+    }
+  }]
 })
 
 // gen jwt token 
 contractorSchema.methods.generateAuthToken = async function() {
   const contractor = this
   const token = jwt.sign({ _id: contractor._id.toString() }, "thisismynewtoken")
+
+  contractor.tokens = contractor.tokens.concat({ token })
+  await contractor.save()
   return token
 
 }
