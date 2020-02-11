@@ -7,7 +7,8 @@ router.post('/contractors', async(req, res) => {
 
   try {
     await contractor.save()
-    res.status(201).send(contractor)
+    const token = await contractor.generateAuthToken()
+    res.status(201).send({ contractor, token })
   } catch(err) {
     res.status(400).send(err)
   }
