@@ -1,7 +1,6 @@
 const express = require('express')
 require('./db/mongoose')
-const Contractor = require("./models/contractor")
-const Task = require('./models/task')
+
 const contractorRouter = require("./routers/contractors.js")
 const taskRouter = require("./routers/tasks.js")
 

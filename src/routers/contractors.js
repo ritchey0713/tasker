@@ -14,6 +14,7 @@ router.post('/contractors', async(req, res) => {
 
 })
 
+
 router.get("/contractors", async(req, res) => {
   try {
     const contractors = await Contractor.find({  })
@@ -74,7 +75,5 @@ router.delete("/contractors/:id", async(req, res) => {
     res.status(500).send()
   }
 })
-
-// null
 
 module.exports = router
