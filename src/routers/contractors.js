@@ -14,6 +14,14 @@ router.post('/contractors', async(req, res) => {
 
 })
 
+router.post("/contractors/login", async (req, res) => {
+  try {
+    const contractor = await Contractor.findByCredentials(req.body.email, req.body.password)
+  }catch(e) {
+
+  }
+})
+
 
 router.get("/contractors", async(req, res) => {
   try {
