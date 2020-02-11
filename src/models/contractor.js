@@ -53,6 +53,6 @@ contractorSchema.pre("save", async function(next) {
   next()
 })
 
-const Contractor = mongoose.model("User", contractorSchema)
+const Contractor = mongoose.model("Contractor", contractorSchema)
 
 module.exports = Contractor
