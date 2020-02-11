@@ -51,7 +51,16 @@ router.patch("/contractors/:id", async(req, res) => {
   }
 
   try{
-    const contractor = await Contractor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    // will not run with pre() middleware
+    //const contractor = await Contractor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+    const contractor = await Contractor.findById(req.params.id)
+
+    // for use with pre() and post() middleware
+    updates.forEach((update) => {
+      contractor[update] = req.body[update]
+    })
+
+    await contractor.save()
 
     if(!contractor) {
       return res.status(404).send()
