@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
+const jwt = require("jsonwebtoken")
 
 const contractorSchema = new mongoose.Schema({
   name: {
@@ -43,6 +44,14 @@ const contractorSchema = new mongoose.Schema({
     }
   }
 })
+
+// gen jwt token 
+contractorSchema.methods.generateAuthToken = async function() {
+  const contractor = this
+  const token = jwt.sign({ _id: contractor._id.toString() }, "thisismynewtoken")
+  return token
+
+}
 
 // validate email/password
 
