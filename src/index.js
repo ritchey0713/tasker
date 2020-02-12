@@ -32,13 +32,18 @@ app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
 
-// const jwt = require('jsonwebtoken')
+const Task = require("./models/task")
+const Contractor = require("./models/contractor.js")
 
-// const myFunction = async () => {
-//   const token = jwt.sign({ _id: "abc123" }, 'thisismynewtoken', {expiresIn: '0 second'})
-//   console.log(token)
-//   const data = jwt.verify(token, 'thisismynewtoken')
-//   console.log(data)
-// }
+const main = async () => {
+  // const task = await Task.findById("5e44439b028590311ee127b6")
+  // await task.populate("contractor").execPopulate()
+  // console.log(task.contractor)
 
-// myFunction()
+  const contractor = await Contractor.findById("5e4442508f48c52f621a80a7")
+  await contractor.populate("tasks").execPopulate()
+  console.log(contractor.tasks)
+
+}
+
+main()
