@@ -112,15 +112,10 @@ router.patch("/contractors/:id", async(req, res) => {
   }
 })
 
-router.delete("/contractors/:id", async(req, res) => {
+router.delete("/contractors/me", auth, async(req, res) => {
   try {
-    const contractor = await Contractor.findByIdAndDelete(req.params.id)
-
-    if(!contractor) {
-      return res.status(404),send()
-    }
-
-    res.send(contractor)
+    await req.contractor.remove()
+    res.send(req.contractor)
   }catch(e) {
     res.status(500).send()
   }
