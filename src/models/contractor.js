@@ -51,6 +51,14 @@ const contractorSchema = new mongoose.Schema({
   }]
 })
 
+
+// virutal assocs to tasks
+contractorSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "contractor"
+})
+
 // gen jwt token 
 contractorSchema.methods.generateAuthToken = async function() {
   const contractor = this
