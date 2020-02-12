@@ -26,6 +26,10 @@ router.post("/contractors/login", async (req, res) => {
   }
 })
 
+router.post("/contractors/logout", auth, async (req, res) => {
+  
+})
+
 
 // for admin use
 router.get("/contractors", auth, async(req, res) => {
