@@ -9,6 +9,8 @@ const auth = async (req, res, next) => {
     if(!contractor) {
       throw new Error()
     }
+
+    req.token = token
     req.contractor = contractor
     next()
   }catch(err) {
