@@ -27,7 +27,16 @@ router.post("/contractors/login", async (req, res) => {
 })
 
 router.post("/contractors/logout", auth, async (req, res) => {
-  
+  try {
+    req.contractor.tokens = req.contractor.tokens.filter((token) => {
+      return token.token != req.token
+    })
+    await req.contractor.save()
+
+    res.send()
+  } catch(err) {
+    res.status(500).send()
+  }
 })
 
 
