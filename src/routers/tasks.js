@@ -40,7 +40,6 @@ router.get("/tasks", auth, async(req, res) => {
     }).execPopulate()
     res.send(req.contractor.tasks)
   }catch(err) {
-    console.log(err)
     res.status(500).send()
   }
 
