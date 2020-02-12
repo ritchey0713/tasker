@@ -39,6 +39,17 @@ router.post("/contractors/logout", auth, async (req, res) => {
   }
 })
 
+router.post("/contractors/logoutAll", auth, async (req, res) => {
+  try {
+    req.contractor.tokens = []
+    await req.contractor.save()
+    res.send({message: "Logged out of all sessions!"})
+  } catch(err) {
+    console.log(err)
+    res.status(500).send()
+  }
+})
+
 
 // for admin use
 router.get("/contractors", auth, async(req, res) => {
