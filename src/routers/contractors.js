@@ -1,6 +1,7 @@
 const express = require('express')
 const Contractor = require("../models/contractor")
 const router = express.Router()
+const auth = require("../middleware/auth.js")
 
 router.post('/contractors', async(req, res) => {
   const contractor = new Contractor(req.body)
@@ -26,7 +27,7 @@ router.post("/contractors/login", async (req, res) => {
 })
 
 
-router.get("/contractors", async(req, res) => {
+router.get("/contractors",auth, async(req, res) => {
   try {
     const contractors = await Contractor.find({  })
     res.status(200).send(contractors)
