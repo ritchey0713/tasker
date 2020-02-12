@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
+const Task = require("./task.js")
 
 const contractorSchema = new mongoose.Schema({
   name: {
@@ -104,6 +105,13 @@ contractorSchema.pre("save", async function(next) {
   if(contractor.isModified('password')) {
     contractor.password = await bcrypt.hash(contractor.password, 8)
   }
+  next()
+})
+
+//middleware to delete tasks when removing account
+contractorSchema.pre("remove", async function(next) {
+  const contractor = this 
+  await Task.deleteMany({ contractor: contractor._id })
   next()
 })
 
