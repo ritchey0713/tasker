@@ -62,6 +62,13 @@ contractorSchema.methods.generateAuthToken = async function() {
 
 }
 
+//protect user data 
+contractorSchema.methods.getPublicProfile = async function() {
+  const contractor = this 
+
+  
+}
+
 // validate email/password
 
 contractorSchema.statics.findByCredentials = async(email, password) => {
