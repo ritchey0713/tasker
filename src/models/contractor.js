@@ -3,6 +3,8 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
 const Task = require("./task.js")
+const multer = require('multer')
+
 
 const contractorSchema = new mongoose.Schema({
   name: {
@@ -60,6 +62,11 @@ contractorSchema.virtual("tasks", {
   ref: "Task",
   localField: "_id",
   foreignField: "contractor"
+})
+
+// file uploads
+contractorSchema.statics.uploads = multer({
+  dest: "avatars"
 })
 
 // gen jwt token 
