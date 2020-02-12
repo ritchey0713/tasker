@@ -18,6 +18,8 @@ router.post('/tasks', auth, async(req, res) => {
 })
 
 //GET /tasks?completed=true
+// pagination, limit and skip
+// GET /tasks?limit=10&skip=0
 router.get("/tasks", auth, async(req, res) => {
   const match = {}
 
@@ -29,10 +31,16 @@ router.get("/tasks", auth, async(req, res) => {
     //const tasks = await Task.find({ contractor: req.contractor._id })
     await req.contractor.populate({
       path: "tasks",
-      match
+      match,
+      options: {
+        limit: parseInt(req.query.limit),
+        // page by limit amount
+        skip: (parseInt(req.query.limit) * (parseInt(req.query.skip)))
+      }
     }).execPopulate()
     res.send(req.contractor.tasks)
   }catch(err) {
+    console.log(err)
     res.status(500).send()
   }
 
