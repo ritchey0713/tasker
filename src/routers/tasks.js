@@ -43,7 +43,7 @@ router.get("/tasks/:id", auth, async(req, res) => {
   }
 })
 
-router.patch("/tasks/:id", async(req, res) => {
+router.patch("/tasks/:id", auth, async(req, res) => {
   const updates = Object.keys(req.body)
   const allowedUpdates = ["description", "completed"]
   const isValidUpdates = updates.every((update) => {
@@ -56,7 +56,12 @@ router.patch("/tasks/:id", async(req, res) => {
   try{
     // set up to work with pre() and post() middleware
     // const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-    const task = await Task.findById(req.params.id)
+    //const task = await Task.findById(req.params.id)
+    const task = await Task.findOne({_id: req.params.id, contractor: req.contractor._id})
+
+    if(!task) {
+      return res.status(404).send({error: "No task found!"})
+    }
     updates.forEach((update) => {
       task[update] = req.body[update]
     })
@@ -72,9 +77,10 @@ router.patch("/tasks/:id", async(req, res) => {
 
 })
 
-router.delete("/tasks/:id", async(req, res) => {
+router.delete("/tasks/:id", auth, async(req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id)
+    //const task = await Task.findByIdAndDelete(req.params.id)
+    const task = await Task.findOneAndDelete({_id: req.params.id, contractor: req.contractor._id })
     if(!task){
       return res.status(400).send()
     }
