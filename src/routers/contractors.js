@@ -80,7 +80,7 @@ router.get("/contractors/:id", async(req, res) => {
 
 })
 
-router.patch("/contractors/:id", async(req, res) => {
+router.patch("/contractors/me", auth, async(req, res) => {
   const updates = Object.keys(req.body)
   const allowedUpdate = ["name", "age", "email", "password"]
   const isValidUpdates = updates.every((update) => {
@@ -94,19 +94,16 @@ router.patch("/contractors/:id", async(req, res) => {
   try{
     // will not run with pre() middleware
     //const contractor = await Contractor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
-    const contractor = await Contractor.findById(req.params.id)
+    //const contractor = await Contractor.findById(req.params.id)
 
     // for use with pre() and post() middleware
     updates.forEach((update) => {
-      contractor[update] = req.body[update]
+      req.contractor[update] = req.body[update]
     })
 
-    await contractor.save()
+    await req.contractor.save()
 
-    if(!contractor) {
-      return res.status(404).send()
-    }
-    res.status(200).send(contractor)
+    res.status(200).send(req.contractor)
   } catch(err){
     res.status(400).send(err)
   }
