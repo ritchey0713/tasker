@@ -17,10 +17,11 @@ router.post('/tasks', auth, async(req, res) => {
   }
 })
 
-router.get("/tasks", async(req, res) => {
+router.get("/tasks", auth, async(req, res) => {
   try {
-    const tasks = await Task.find({ })
-    res.send(tasks)
+    //const tasks = await Task.find({ contractor: req.contractor._id })
+    await req.contractor.populate("tasks").execPopulate()
+    res.send(req.contractor.tasks)
   }catch(err) {
     res.status(500).send()
   }
