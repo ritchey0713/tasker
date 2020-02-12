@@ -63,7 +63,7 @@ contractorSchema.methods.generateAuthToken = async function() {
 }
 
 //protect user data 
-contractorSchema.methods.getPublicProfile = function() {
+contractorSchema.methods.toJSON = function() {
   const contractor = this 
   const publicObj = contractor.toObject()
   delete publicObj.password
