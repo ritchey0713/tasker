@@ -20,11 +20,19 @@ router.post('/tasks', auth, async(req, res) => {
 //GET /tasks?completed=true
 // pagination, limit and skip
 // GET /tasks?limit=10&skip=0
+// GET /tasks?sortBy=createdAt_asc
 router.get("/tasks", auth, async(req, res) => {
   const match = {}
 
+  const sort = {}
+
   if(req.query.completed) {
     match.completed = req.query.completed === "true"
+  }
+
+  if(req.query.sortBy) {
+    const parts = req.query.sortBy.split("_")
+    sort[parts[0]] = parts[1].toLowerCase() === "desc" ? -1 : 1
   }
 
   try {
@@ -35,14 +43,14 @@ router.get("/tasks", auth, async(req, res) => {
       options: {
         limit: parseInt(req.query.limit),
         // page by limit amount
-        skip: (parseInt(req.query.limit) * (parseInt(req.query.skip)))
+        skip: (parseInt(req.query.limit) * (parseInt(req.query.skip))),
+        sort
       }
     }).execPopulate()
     res.send(req.contractor.tasks)
   }catch(err) {
     res.status(500).send()
   }
-
 })
 
 router.get("/tasks/:id", auth, async(req, res) => {
