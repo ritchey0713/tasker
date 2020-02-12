@@ -20,7 +20,7 @@ router.post("/contractors/login", async (req, res) => {
   try {
     const contractor = await Contractor.findByCredentials(req.body.email, req.body.password)
     const token = await contractor.generateAuthToken()
-    res.send({ contractor, token })
+    res.send({ contractor: contractor.getPublicProfile(), token })
   }catch(err) {
     res.status(400).send()
   }
