@@ -45,7 +45,6 @@ router.post("/contractors/logoutAll", auth, async (req, res) => {
     await req.contractor.save()
     res.send({message: "Logged out of all sessions!"})
   } catch(err) {
-    console.log(err)
     res.status(500).send()
   }
 })
