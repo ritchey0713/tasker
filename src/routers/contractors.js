@@ -118,4 +118,8 @@ router.delete("/contractors/me", auth, async(req, res) => {
   }
 })
 
+router.post("/contractors/me/avatar", Contractor.uploads.single('avatar'), (req, res) => {
+  res.send()
+})
+
 module.exports = router
