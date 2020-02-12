@@ -34,16 +34,3 @@ app.listen(port, () => {
 
 const Task = require("./models/task")
 const Contractor = require("./models/contractor.js")
-
-const main = async () => {
-  // const task = await Task.findById("5e44439b028590311ee127b6")
-  // await task.populate("contractor").execPopulate()
-  // console.log(task.contractor)
-
-  const contractor = await Contractor.findById("5e4442508f48c52f621a80a7")
-  await contractor.populate("tasks").execPopulate()
-  console.log(contractor.tasks)
-
-}
-
-main()
