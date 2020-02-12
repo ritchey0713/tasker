@@ -27,13 +27,19 @@ router.post("/contractors/login", async (req, res) => {
 })
 
 
-router.get("/contractors",auth, async(req, res) => {
+// for admin use
+router.get("/contractors", auth, async(req, res) => {
   try {
     const contractors = await Contractor.find({  })
     res.status(200).send(contractors)
   }catch(err) {
     res.status(400).send(err)
   }
+})
+
+
+router.get("/contractors/me", auth, async(req, res) => {
+  res.send(req.contractor)
 })
 
 router.get("/contractors/:id", async(req, res) => {
