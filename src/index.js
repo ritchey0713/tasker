@@ -28,9 +28,18 @@ app.use(contractorRouter, taskRouter)
 
 // with middleware => new request => do something => run route handler
 
+const multer = require("multer")
+const upload = multer({
+  dest: "images"
+})
+
+app.post("/upload", upload.single('upload'), (req, res) => {
+  res.send()
+})
+
+
 app.listen(port, () => {
   console.log(`server loaded at ${port}`)
 })
 
-const Task = require("./models/task")
-const Contractor = require("./models/contractor.js")
+
