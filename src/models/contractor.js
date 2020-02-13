@@ -69,7 +69,6 @@ contractorSchema.virtual("tasks", {
 
 // file uploads
 contractorSchema.statics.uploads = multer({
-  dest: "avatars", 
   limits: {
     fileSize: 1000000
   },
