@@ -66,7 +66,20 @@ contractorSchema.virtual("tasks", {
 
 // file uploads
 contractorSchema.statics.uploads = multer({
-  dest: "avatars"
+  dest: "avatars", 
+  limits: {
+    fileSize: 1000000
+  },
+  fileFilter(req, file, cb) {
+    // if(!file.originalname.match(/\.(doc|docx)$/)) {
+      if(!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Avatar should be of type jpg, jpeg or png!"))
+    }
+    
+    // cb(new Error("file must be PDF"))
+
+    cb(undefined, true)
+  }
 })
 
 // gen jwt token 
