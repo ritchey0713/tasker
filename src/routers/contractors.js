@@ -126,4 +126,12 @@ router.post("/contractors/me/avatar",auth, Contractor.uploads.single('avatar'), 
   res.status(400).send({ error: error.message })
 })
 
+router.delete("/contractors/me/avatar", auth, async (req, res) => {
+  req.contractor.avatar = undefined
+  await req.contractor.save()
+  res.send({ message: "avatar deleted!" })
+}, (error, req, res, next) => {
+  res.status(400).send({error: error})
+})
+
 module.exports = router
