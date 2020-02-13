@@ -46,6 +46,9 @@ const contractorSchema = new mongoose.Schema({
       }
     }
   },
+  avatar: {
+    type: Buffer
+  },
   tokens: [{
     token: {
       type: String,
