@@ -119,6 +119,8 @@ router.delete("/contractors/me", auth, async(req, res) => {
 })
 
 router.post("/contractors/me/avatar", Contractor.uploads.single('avatar'), (req, res) => {
+  req,contractor.avatar = ref.file.buffer
+  await req.contractor.save()
   res.send()
 }, (error, req, res, next) => {
   res.status(400).send({ error: error.message })
