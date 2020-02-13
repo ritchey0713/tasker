@@ -134,4 +134,8 @@ router.delete("/contractors/me/avatar", auth, async (req, res) => {
   res.status(400).send({error: error})
 })
 
+router.get('/users/:id/avatar', async (req, res) => {
+  
+})
+
 module.exports = router
