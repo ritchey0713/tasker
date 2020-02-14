@@ -1,4 +1,5 @@
 const express = require('express')
+const sharp = require("sharp")
 const Contractor = require("../models/contractor")
 const router = express.Router()
 const auth = require("../middleware/auth.js")
@@ -119,7 +120,9 @@ router.delete("/contractors/me", auth, async(req, res) => {
 })
 
 router.post("/contractors/me/avatar",auth, Contractor.uploads.single('avatar'), async (req, res) => {
-  req.contractor.avatar = req.file.buffer
+  //req.contractor.avatar = req.file.buffer
+  const buffer = await sharp(req.file.buffer).resize({ width: 250, height: 250 }).png().toBuffer()
+  req.contractor.avatar = buffer
   await req.contractor.save()
   res.send()
 }, (error, req, res, next) => {
@@ -141,7 +144,7 @@ router.get('/contractors/:id/avatar', async (req, res) => {
     if(!contractor.avatar) {
       throw new Error()
     }
-    res.set("Content-type", "image/jpg")
+    res.set("Content-type", "image/png")
     res.send(contractor.avatar)
   } catch(err) {
     res.status(404).send()
