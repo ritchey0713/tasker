@@ -22,6 +22,8 @@ const port = process.env.PORT || 3000
 // })
 
 app.use(express.json())
+
+//allows use of middleware
 app.use(contractorRouter, taskRouter)
 
 // without middleware => new request => run route handler
