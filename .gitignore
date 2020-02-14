@@ -6,3 +6,4 @@ src/playground
 images
 avatars
 /src/emails/secrets.js
+config
