@@ -87,7 +87,7 @@ contractorSchema.statics.uploads = multer({
 // gen jwt token 
 contractorSchema.methods.generateAuthToken = async function() {
   const contractor = this
-  const token = jwt.sign({ _id: contractor._id.toString() }, "thisismynewtoken")
+  const token = jwt.sign({ _id: contractor._id.toString() }, process.env.JWT_TOKEN)
 
   contractor.tokens = contractor.tokens.concat({ token })
   await contractor.save()
