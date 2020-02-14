@@ -101,6 +101,7 @@ contractorSchema.methods.toJSON = function() {
   const publicObj = contractor.toObject()
   delete publicObj.password
   delete publicObj.tokens
+  delete publicObj.avatar
 
   return publicObj
 }
