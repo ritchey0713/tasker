@@ -3,12 +3,14 @@ const sharp = require("sharp")
 const Contractor = require("../models/contractor")
 const router = express.Router()
 const auth = require("../middleware/auth.js")
+const { sendWelcomeEmail, cancelEmail } = require("../emails/account")
 
 router.post('/contractors', async(req, res) => {
   const contractor = new Contractor(req.body)
 
   try {
     await contractor.save()
+    sendWelcomeEmail(contractor.email, contractor.name)
     const token = await contractor.generateAuthToken()
     res.status(201).send({ contractor, token })
   } catch(err) {
@@ -113,6 +115,7 @@ router.patch("/contractors/me", auth, async(req, res) => {
 router.delete("/contractors/me", auth, async(req, res) => {
   try {
     await req.contractor.remove()
+    cancelEmail(req.contractor.email, req.contractor.name)
     res.send(req.contractor)
   }catch(e) {
     res.status(500).send()
