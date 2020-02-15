@@ -159,3 +159,7 @@ test("should not upload if unauthenticated", async () => {
   .expect(401) 
 })
 
+test("should delete an avatar image", async () => {
+  
+})
+
