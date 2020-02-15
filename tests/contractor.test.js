@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const mongoose = require("mongoose")
 const app = require("../src/app.js")
 const Contractor = require("../src/models/contractor.js")
-const avatarImg = `${__dirname}/profile-pic.jpg`
+const avatarImg = `${__dirname}/fixtures/profile-pic.jpg`
 
 
 const contractorOneId = new mongoose.Types.ObjectId()
@@ -164,4 +164,5 @@ test("should delete an avatar image", async () => {
   .send()
   .expect(401)
 })
+
 
