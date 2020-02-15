@@ -58,4 +58,16 @@ test("Should not get profile for unauthenticated contractor", async () => {
   .expect(401)
 })
 
+test("Should delete a contractor", async () => {
+  await request(app).delete("/contractors/me")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send()
+  .expect(200)
+})
+
+test("Shouldn't delete contractor if not authenticated", async () => {
+  await request(app).delete("/contractors/me")
+  .send()
+  .expect(401)
+})
 
