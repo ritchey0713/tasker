@@ -115,8 +115,8 @@ test("Should update a contractor data", async () => {
     age: 30
   }).expect(200)
   const contractor = await Contractor.findById(contractorOne._id)
-  expect(contractor.name).toBe("Sally")
-  expect(contractor.age).toBe(30)
+  expect(contractor.name).toEqual("Sally")
+  expect(contractor.age).toEqual(30)
 })
 
 test("Should not update invalid user fields", async () => {
