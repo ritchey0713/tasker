@@ -1,11 +1,21 @@
 const request = require('supertest')
+const jwt = require('jsonwebtoken')
+const mongoose = require("mongoose")
 const app = require("../src/app.js")
 const Contractor = require("../src/models/contractor.js")
 
+
+const contractorOneId = new mongoose.Types.ObjectId()
 const contractorOne = {
+  _id: contractorOneId,
   name: "Mike",
   email: "Mike@mike.com",
-  password: "Mike123"
+  password: "Mike123",
+  tokens: [{
+    token: jwt.sign({
+      _id: contractorOneId
+    }, process.env.JWT_TOKEN)
+  }]
 }
 
 beforeEach(async () => {
@@ -34,4 +44,12 @@ test("Should not login a non-existent user", async () => {
     password: "NotSoSecret"
   }).expect(400)
 })
+
+test("should get profile for contractor", async () => {
+  await request(app).get("/contractors/me")
+    .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+    .send()
+    .expect(200)
+})
+
 
