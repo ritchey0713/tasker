@@ -42,14 +42,19 @@ test("Should signup new contractor", async () => {
     },
     token: contractor.tokens[0].token
   })
+  expect(contractor.password).not.toBe("MySecret111!")
 })
 
 test("Should login a user", async () => {
-  await request(app).post("/contractors/login").send({
+  const resp = await request(app).post("/contractors/login").send({
     email: contractorOne.email,
     password: contractorOne.password
   }).expect(200)
+  // check token is added on login
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(resp.body.token).toBe(contractor.tokens[1].token)
 })
+
 
 test("Should not login a non-existent user", async () => {
   await request(app).post("/contractors/login").send({
@@ -72,10 +77,13 @@ test("Should not get profile for unauthenticated contractor", async () => {
 })
 
 test("Should delete a contractor", async () => {
-  await request(app).delete("/contractors/me")
+  const resp = await request(app).delete("/contractors/me")
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .send()
   .expect(200)
+
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(contractor).toBeNull()
 })
 
 test("Shouldn't delete contractor if not authenticated", async () => {
