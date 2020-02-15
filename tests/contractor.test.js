@@ -115,8 +115,17 @@ test("Should update a contractor data", async () => {
     age: 30
   }).expect(200)
   const contractor = await Contractor.findById(contractorOne._id)
-  expect(contractor).not.toBe("John")
-  expect(contractor).not.toBe(0)
+  expect(contractor.name).toBe("Sally")
+  expect(contractor.age).toBe(30)
+})
+
+test("Should not update invalid user fields", async () => {
+  await request(app).patch("/contractors/me")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send({
+    location: "Tokyo, Japan",
+    phoneNumber: "123-123-1234"
+  }).expect(400)
 })
 
 test("Can not update another users profile", async () => {
@@ -149,8 +158,8 @@ test("should upload an avatar img", async () => {
   .attach("avatar", avatarImg)
   .expect(200)
 
-  const contractor = Contractor.findById(contractorOne._id)
-  expect(contractor.avatar).not.toBeNull()
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(contractor.avatar).toEqual(expect.any(Buffer))
 })
 
 test("should not upload if unauthenticated", async () => {
