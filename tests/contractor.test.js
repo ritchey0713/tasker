@@ -52,4 +52,10 @@ test("should get profile for contractor", async () => {
     .expect(200)
 })
 
+test("Should not get profile for unauthenticated contractor", async () => {
+  await request(app).get("/contractors/me")
+  .send()
+  .expect(401)
+})
+
 
