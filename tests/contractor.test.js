@@ -55,6 +55,18 @@ test("Should login a user", async () => {
   expect(resp.body.token).toBe(contractor.tokens[1].token)
 })
 
+test("Should logout a user", async () => {
+  await request(app).post("/contractors/logout")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send()
+  .expect(200)
+  
+  await request(app).get("/contractors/me")
+  // make sure original token is bad
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send()
+  .expect(401)
+})
 
 test("Should not login a non-existent user", async () => {
   await request(app).post("/contractors/login").send({
@@ -74,6 +86,26 @@ test("Should not get profile for unauthenticated contractor", async () => {
   await request(app).get("/contractors/me")
   .send()
   .expect(401)
+})
+
+test("Should update a contractor data", async () => {
+  await request(app).patch("/contractors/me")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send({
+    name: "Sally",
+    age: 30
+  }).expect(200)
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(contractor).not.toBe("John")
+  expect(contractor).not.toBe(0)
+})
+
+test("Can not update another users profile", async () => {
+  await request(app).patch("/contractors/me")
+  .send({
+    name: "Not good",
+    age: 22
+  }).expect(401)
 })
 
 test("Should delete a contractor", async () => {
