@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const mongoose = require("mongoose")
 const app = require("../src/app.js")
 const Contractor = require("../src/models/contractor.js")
+const avatarImg = `${__dirname}/profile-pic.jpg`
 
 
 const contractorOneId = new mongoose.Types.ObjectId()
@@ -140,5 +141,21 @@ test("Shouldn't delete contractor if not authenticated", async () => {
   await request(app).delete("/contractors/me")
   .send()
   .expect(401)
+})
+
+test("should upload an avatar img", async () => {
+  await request(app).post("/contractors/me/avatar")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .attach("avatar", avatarImg)
+  .expect(200)
+
+  const contractor = Contractor.findById(contractorOne._id)
+  expect(contractor.avatar).not.toBeNull()
+})
+
+test("should not upload if unauthenticated", async () => {
+  await request(app).post("/contractors/me/avatar")
+  .attach("avatar", avatarImg)
+  .expect(401) 
 })
 
