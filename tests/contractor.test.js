@@ -24,11 +24,24 @@ beforeEach(async () => {
 })
 
 test("Should signup new contractor", async () => {
-  await request(app).post("/contractors").send({
+  const resp = await request(app).post("/contractors").send({
     name: "John",
     email: "John@example.com",
     password:"MySecret111!"
   }).expect(201)
+  // check db change 
+  const contractor = await Contractor.findById(resp.body.contractor._id)
+  expect(contractor).not.toBeNull() 
+
+  //assert body 
+  expect(resp.body.contractor.name).toBe("John")
+  expect(resp.body).toMatchObject({
+    contractor: {
+      name: "John",
+      email: "john@example.com"
+    },
+    token: contractor.tokens[0].token
+  })
 })
 
 test("Should login a user", async () => {
