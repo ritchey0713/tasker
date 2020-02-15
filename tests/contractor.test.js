@@ -55,7 +55,7 @@ test("Should login a user", async () => {
   expect(resp.body.token).toBe(contractor.tokens[1].token)
 })
 
-test("Should logout a user", async () => {
+test("Should logout a contractor", async () => {
   await request(app).post("/contractors/logout")
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .send()
@@ -69,6 +69,21 @@ test("Should logout a user", async () => {
 
   const contractor = await Contractor.findById(contractorOne._id)
   expect(contractor.tokens.length).not.toBe(1)
+})
+
+test("Should remove all tokens from a contractor", async () => {
+  const resp = await request(app).post("/contractors/login").send({
+    email: contractorOne.email,
+    password: contractorOne.password
+  })
+
+  await request(app).post("/contractors/logoutAll")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send()
+  .expect(200)
+
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(contractor.tokens.length).toBe(0)
 })
 
 test("Should not login a non-existent user", async () => {
