@@ -66,6 +66,9 @@ test("Should logout a user", async () => {
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .send()
   .expect(401)
+
+  const contractor = await Contractor.findById(contractorOne._id)
+  expect(contractor.tokens.length).not.toBe(1)
 })
 
 test("Should not login a non-existent user", async () => {
