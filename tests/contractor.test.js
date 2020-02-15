@@ -160,6 +160,8 @@ test("should not upload if unauthenticated", async () => {
 })
 
 test("should delete an avatar image", async () => {
-  
+  await request(app).delete("/contractors/me/avatar")
+  .send()
+  .expect(401)
 })
 
