@@ -4,25 +4,11 @@ const mongoose = require("mongoose")
 const app = require("../src/app.js")
 const Contractor = require("../src/models/contractor.js")
 const avatarImg = `${__dirname}/fixtures/profile-pic.jpg`
+const { contractorOne, contractorOneId, setupDb } = require("./fixtures/db.js")
 
 
-const contractorOneId = new mongoose.Types.ObjectId()
-const contractorOne = {
-  _id: contractorOneId,
-  name: "Mike",
-  email: "Mike@mike.com",
-  password: "Mike123",
-  tokens: [{
-    token: jwt.sign({
-      _id: contractorOneId
-    }, process.env.JWT_TOKEN)
-  }]
-}
 
-beforeEach(async () => {
-  await Contractor.deleteMany()
-  await new Contractor(contractorOne).save()
-})
+beforeEach(setupDb)
 
 test("Should signup new contractor", async () => {
   const resp = await request(app).post("/contractors").send({
