@@ -18,6 +18,11 @@ test("Should create a new task",  async () => {
   const task = await Task.findById(resp.body._id)
   expect(task).not.toBeNull()
   expect(task.completed).toBe(false)
+
+  const contractor = await Contractor.findById(contractorOneId).populate("tasks")
+
+  expect(contractor.tasks.length).toBe(3)
+
 })
 
 test("Should get tasks of the signed in user", async () => {
@@ -28,4 +33,8 @@ test("Should get tasks of the signed in user", async () => {
   const contractor = await Contractor.findById(contractorOneId).populate("tasks")
 
   expect(contractor.tasks.length).toEqual(resp.body.length)
+})
+
+test("Should get a single task belonging to signed in user", async () => {
+  
 })
