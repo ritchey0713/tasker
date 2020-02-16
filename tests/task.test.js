@@ -1,7 +1,7 @@
 const request = require("supertest")
 const Task = require("../src/models/task.js")
 const app = require("../src/app.js")
-const { contractorOne, contractorOneId, setupDb } = require("./fixtures/db.js")
+const { contractorOne, contractorOneId, setupDb, taskOne, taskTwo } = require("./fixtures/db.js")
 
 
 
@@ -17,5 +17,5 @@ test("Should create a new task",  async () => {
   const task = await Task.findById(resp.body._id)
   expect(task).not.toBeNull()
   expect(task.completed).toBe(false)
-  
+
 })
