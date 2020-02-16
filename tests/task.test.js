@@ -13,4 +13,9 @@ test("Should create a new task",  async () => {
   .send({
     description: "A test task"
   }).expect(201)
+
+  const task = await Task.findById(resp.body._id)
+  expect(task).not.toBeNull()
+  expect(task.completed).toBe(false)
+  
 })
