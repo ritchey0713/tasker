@@ -2,7 +2,7 @@ const request = require("supertest")
 const Task = require("../src/models/task.js")
 const Contractor = require("../src/models/contractor.js")
 const app = require("../src/app.js")
-const { contractorOne, contractorOneId, setupDb, taskOne, taskTwo } = require("./fixtures/db.js")
+const { contractorOne, contractorOneId, contractorTwo, contractorTwoId, setupDb, taskOne, taskTwo } = require("./fixtures/db.js")
 
 
 
@@ -37,7 +37,7 @@ test("Should get tasks of the signed in user", async () => {
 
 test("Should get a single task belonging to signed in user", async () => {
   const task =  await Task.findById(taskOne._id)
-  const resp = await request(app).get(`/tasks/${task._id}`)
+  await request(app).get(`/tasks/${task._id}`)
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .expect(200)
 })
@@ -47,4 +47,24 @@ test("should not allow a user to view other users tasks", async () => {
   const resp = await request(app).get(`/tasks/${task._id}`)
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .expect(404)
+})
+
+test("Shouldn't delete a task of another user", async () => {
+  const task = await Task.findById(taskOne._id)
+  await request(app).delete(`/tasks/${task._id}`)
+  .set("Authorization", `Bearer ${contractorTwo.tokens[0].token}`)
+  .expect(400)
+
+  expect(task).not.toBeNull()
+})
+
+test("should update a task", async () => {
+  await request(app).patch(`/tasks/${taskOne._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send({
+    completed: false
+  })
+  .expect(200)
+  const task = await Task.findById(taskOne._id)
+  expect(task.completed).toBe(false)
 })
