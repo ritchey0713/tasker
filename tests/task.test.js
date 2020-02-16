@@ -36,5 +36,15 @@ test("Should get tasks of the signed in user", async () => {
 })
 
 test("Should get a single task belonging to signed in user", async () => {
-  
+  const task =  await Task.findById(taskOne._id)
+  const resp = await request(app).get(`/tasks/${task._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(200)
+})
+
+test("should not allow a user to view other users tasks", async () => {
+  const task =  await Task.findById(taskTwo._id)
+  const resp = await request(app).get(`/tasks/${task._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(404)
 })
