@@ -25,6 +25,24 @@ test("Should create a new task",  async () => {
 
 })
 
+test("shouldn't create a test without a description", async () => {
+  await request(app).post("/tasks")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send({
+    completed: true
+  })
+  .expect(400)
+})
+
+test("Should not create a task for unauthenticated user", async () => {
+  await request(app).post("/tasks")
+  .send({
+    description: "Test task"
+  })
+  .expect(401
+    )
+})
+
 test("Should get tasks of the signed in user", async () => {
   const resp =  await request(app).get("/tasks")
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
@@ -36,17 +54,28 @@ test("Should get tasks of the signed in user", async () => {
 })
 
 test("Should get a single task belonging to signed in user", async () => {
-  const task =  await Task.findById(taskOne._id)
+  const task = await Task.findById(taskOne._id)
   await request(app).get(`/tasks/${task._id}`)
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .expect(200)
+
+  expect(task.description).toBe("First test task")
 })
 
 test("should not allow a user to view other users tasks", async () => {
   const task =  await Task.findById(taskTwo._id)
-  const resp = await request(app).get(`/tasks/${task._id}`)
+  await request(app).get(`/tasks/${task._id}`)
   .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
   .expect(404)
+})
+
+test("should delete a users task", async () => {
+  const resp = await request(app).delete(`/tasks/${taskOne._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(200)
+
+  const task = await Task.findById(taskOne._id)
+  expect(task).toBeNull()
 })
 
 test("Shouldn't delete a task of another user", async () => {
@@ -56,6 +85,11 @@ test("Shouldn't delete a task of another user", async () => {
   .expect(400)
 
   expect(task).not.toBeNull()
+})
+
+test("Should not delete if not authenticated", async () => {
+  await request(app).delete(`/tasks/${taskOne._id}`)
+  .expect(401)
 })
 
 test("should update a task", async () => {
@@ -68,3 +102,21 @@ test("should update a task", async () => {
   const task = await Task.findById(taskOne._id)
   expect(task.completed).toBe(false)
 })
+
+test("should not update another users task", async () => {
+  await request(app).patch(`/tasks/${taskTwo._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send({
+    description: "test"
+  })
+  .expect(404)
+})
+
+test("should not allow update without a description value", async () => {
+  delete taskOne.description
+  await request(app).patch(`/tasks/${taskOne._id}`)
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .send(taskOne)
+  .expect(400)
+})
+
