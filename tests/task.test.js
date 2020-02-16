@@ -2,7 +2,15 @@ const request = require("supertest")
 const Task = require("../src/models/task.js")
 const Contractor = require("../src/models/contractor.js")
 const app = require("../src/app.js")
-const { contractorOne, contractorOneId, contractorTwo, contractorTwoId, setupDb, taskOne, taskTwo } = require("./fixtures/db.js")
+const { contractorOne, 
+        contractorOneId, 
+        contractorTwo, 
+        contractorTwoId, 
+        setupDb, 
+        taskOne, 
+        taskTwo,
+        taskThree 
+      } = require("./fixtures/db.js")
 
 
 
@@ -111,6 +119,31 @@ test("should not update another users task", async () => {
   })
   .expect(404)
 })
+
+test("should only fetch completed tasks for the user", async () => {
+  const resp = await request(app).get("/tasks?completed=true")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(200)
+
+  expect(resp.body.length).toBe(1)
+})
+
+test("should only fetch incomplete tasks for the user", async () => {
+  const resp = await request(app).get("/tasks?completed=false")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(200)
+
+  expect(resp.body.length).toBe(1)
+})
+
+test("should sort by createdAt", async () => {
+  const resp = await request(app).get("/tasks?sortBy=createdAt_desc")
+  .set("Authorization", `Bearer ${contractorOne.tokens[0].token}`)
+  .expect(200)
+  expect(resp.body[0]._id).toEqual(taskThree._id.toString())
+})
+
+test("Should paginate the users tasks")
 
 test("should not allow update without a description value", async () => {
   delete taskOne.description
